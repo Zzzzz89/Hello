@@ -1,0 +1,35 @@
+from manim import *
+import numpy as np
+
+class BirthdayAnik(Scene):
+    def construct(self):
+        self.camera.background_color = "#fff0f5"
+
+        title = Text("Happy Birthday, Anik! 🎉", font="Comic Sans MS", font_size=60, color=BLUE)
+        title.move_to(UP * 2.5)
+        self.play(Write(title), run_time=2)
+        self.wait(1)
+
+        def create_heart(scale=1):
+            heart = SVGMobject("heart.svg")
+            heart.set_color(RED)
+            heart.scale(scale)
+            return heart
+
+        hearts = VGroup()
+        for _ in range(20):
+            scale = np.random.uniform(0.2, 0.5)
+            heart = create_heart(scale)
+            heart.move_to([np.random.uniform(-6, 6), np.random.uniform(-2.5, 2), 0])
+            hearts.add(heart)
+
+        self.play(LaggedStart(*[FadeIn(h) for h in hearts], lag_ratio=0.1), run_time=3)
+        self.wait(1)
+
+        cake = SVGMobject("cake.svg").set_color(PINK).scale(1.5).move_to(DOWN * 2)
+        self.play(FadeIn(cake), run_time=2)
+
+        wish = Text("Wishing you joy, love, and lots of cake!", font_size=36, color="#FF1493")
+        wish.next_to(cake, UP)
+        self.play(Write(wish), run_time=2)
+        self.wait(3)
